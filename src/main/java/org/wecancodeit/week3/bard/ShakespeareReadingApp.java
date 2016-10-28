@@ -2,7 +2,6 @@ package org.wecancodeit.week3.bard;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -42,18 +41,17 @@ public class ShakespeareReadingApp {
 	 * <p>
 	 */
 	private static void readAndWriteToSystemOut() throws IOException {
-		FileInputStream fis = new FileInputStream(SHAKESPEARE_FILEPATH); // FileInputStream
-																			// robust
-																			// with
-																			// different
-																			// character
-																			// encoding
-		BufferedReader buffer = new BufferedReader(new InputStreamReader(fis));
-		String line; // copied from CodeEval
-		while ((line = buffer.readLine()) != null) { // copied from CodeEval
-			System.out.println(line);
+		try (FileInputStream fis = new FileInputStream(SHAKESPEARE_FILEPATH);
+				BufferedReader buffer = new BufferedReader(
+						new InputStreamReader(fis))) {
+			String line; // copied from CodeEval
+			while ((line = buffer.readLine()) != null) { // copied from CodeEval
+				System.out.println(line);
+			}
 		}
-		buffer.close();
+		// buffer.close(); // Try-with-resources closes automatically (new to
+		// Java 7+)
+		// fis.close();
 
 	}
 
@@ -96,28 +94,30 @@ public class ShakespeareReadingApp {
 	 */
 	private static void writeFileReplacingPunctuationWithLinebreaks()
 			throws IOException {
-		FileInputStream fis = new FileInputStream(SHAKESPEARE_FILEPATH); // FileInputStream
-		// robust
-		// with
-		// different
-		// character
-		// encoding
-		BufferedReader buffer = new BufferedReader(new InputStreamReader(fis));
-		String line; // copied from CodeEval
-		while ((line = buffer.readLine()) != null) { // copied from CodeEval
-			prose += line;
+		try (FileInputStream fis = new FileInputStream(SHAKESPEARE_FILEPATH);
+				BufferedReader buffer = new BufferedReader(
+						new InputStreamReader(fis))) {
+			String line; // copied from CodeEval
+			while ((line = buffer.readLine()) != null) { // copied from CodeEval
+				prose += line;
+			}
 		}
-		buffer.close();
+		// buffer.close();
+		// fis.close();
 		PunctuationStripper shakespeare = new PunctuationStripper(prose);
 		shakespeare.stripPunctuation();
 		// shakespeare.trimString(); // if stripPunctuation() isn't written to
 		// also trim
 		String newFileNameNoExt = SHAKESPEARE_FILEPATH.substring(0,
-				(SHAKESPEARE_FILEPATH.length() - 4)); // This is an extension; you can also hardcode a path to a new file
+				(SHAKESPEARE_FILEPATH.length() - 4)); // As an alternative to
+														// hardcoding a path to
+														// a new file
 		// http://stackoverflow.com/questions/2885173/how-to-create-a-file-and-write-to-a-file-in-java
-		PrintWriter writer = new PrintWriter(newFileNameNoExt + "_Stripped.txt");
-		writer.println(shakespeare.getStrippedString());
-		writer.close();
+		try (PrintWriter writer = new PrintWriter(newFileNameNoExt
+				+ "_Stripped.txt")) {
+			writer.println(shakespeare.getStrippedString());
+		}
+		// writer.close();
 
 	}
 
@@ -132,23 +132,29 @@ public class ShakespeareReadingApp {
 	 * TODO Close the {@link BufferedReader} you use in a finally block
 	 * </p>
 	 */
+
+	// I tried the try-with-resources (Java 7+) to automatically close without
+	// "finally"
 	private static void tryToReadAFileThatDoesntExist() {
-		FileInputStream fis;
-		try {
-			fis = new FileInputStream(
-					"C:\\Users\\WeCanCodeIT\\OneDrive\\Documents\\WeCanCodeIT\\Repo\\java-cbus-reading-the-bard\\src\\main\\resources\\YorickNoFile.txt");
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(
-					fis));
+		try (FileInputStream fis = new FileInputStream(
+				"C:\\Users\\WeCanCodeIT\\OneDrive\\Documents\\WeCanCodeIT\\Repo\\java-cbus-reading-the-bard\\src\\main\\resources\\YorickNoFile.txt");
+				BufferedReader buffer = new BufferedReader(
+						new InputStreamReader(fis))) {
 			String line; // copied from CodeEval
 			while ((line = buffer.readLine()) != null) { // copied from CodeEval
 				System.out.println(line);
 			}
-			buffer.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		// finally {
+		// if (buffer != null) {
+		// System.out.println("Closing BufferedReader");
+		// buffer.close();
+		// } else {
+		// System.out.println("BufferedReader not open");
+		// }
 	}
 
 }
