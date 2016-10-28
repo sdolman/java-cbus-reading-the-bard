@@ -14,6 +14,6 @@
 
 This exercise uses a folder structure that is a bit different than what we've used in the past. The de facto standard in the enterprise world, due to the influence of Gradle (and Maven before it) uses *src/main/java* for production source files and *src/test/java* for test files. Resources (files other than java files) are located in *src/main/resources* and *source/test/resources*.
 
-You will find the files already created. (Do not create any additional java files.) Your job is to write the code to make the tests pass and make the apps function. The comments should guide you through the exercise.
+You will find the files already created. (Do not create any additional java files.) Your job is to write the code to make the tests pass and make the apps function. The comments should guide you through the exercise. Look for TODO comments -- the Eclipse Tasks view will help you find these.
 
 
