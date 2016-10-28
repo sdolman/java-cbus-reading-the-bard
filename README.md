@@ -12,6 +12,8 @@
 		- check the box for the project (which should be named *java-cbus-reading-the-bard*) and hit *Finish*
 - Tell your instructor where these instructions were wrong :wink:
 
-This exercise uses a folder structure that is a bit different than what we've used in the past. The de facto standard in the enterprise world, due to the influence of Gradle (and Maven before it) uses *src/main/java* for production source files and *src/test/java* for test files. You will find the files already created. Your job is to complete them. The comments should guide you through the exercise.
+This exercise uses a folder structure that is a bit different than what we've used in the past. The de facto standard in the enterprise world, due to the influence of Gradle (and Maven before it) uses *src/main/java* for production source files and *src/test/java* for test files. Resources (files other than java files) are located in *src/main/resources* and *source/test/resources*.
+
+You will find the files already created. (Do not create any additional java files.) Your job is to write the code to make the tests pass and make the apps function. The comments should guide you through the exercise.
 
 
